@@ -7,15 +7,49 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CB5CFEF6236DC9620045AC90 /* PMKCoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB5CFEF5236DC9620045AC90 /* PMKCoreLocation.framework */; };
+		CB5CFEF7236DC9620045AC90 /* PMKCoreLocation.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CB5CFEF5236DC9620045AC90 /* PMKCoreLocation.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		CB5CFEFA236DC9650045AC90 /* PMKFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB5CFEF9236DC9650045AC90 /* PMKFoundation.framework */; };
+		CB5CFEFB236DC9650045AC90 /* PMKFoundation.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CB5CFEF9236DC9650045AC90 /* PMKFoundation.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		CB5CFEFD236DC9680045AC90 /* PromiseKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB5CFEFC236DC9680045AC90 /* PromiseKit.framework */; };
+		CB5CFEFE236DC9680045AC90 /* PromiseKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CB5CFEFC236DC9680045AC90 /* PromiseKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		CB5CFF01236DD4540045AC90 /* DeferredPromise.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB5CFF00236DD4540045AC90 /* DeferredPromise.swift */; };
+		CB5CFF05236F06970045AC90 /* UIViewController+Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB5CFF04236F06970045AC90 /* UIViewController+Alert.swift */; };
+		CB5CFF07236F1E5A0045AC90 /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB5CFF06236F1E590045AC90 /* UIView+Extension.swift */; };
+		CBB133C12378ACAD007A2AEF /* LoadingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBB133C02378ACAD007A2AEF /* LoadingViewController.swift */; };
 		CBFDF542236DB7F500D417A1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBFDF541236DB7F500D417A1 /* AppDelegate.swift */; };
 		CBFDF544236DB7F500D417A1 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBFDF543236DB7F500D417A1 /* SceneDelegate.swift */; };
 		CBFDF546236DB7F500D417A1 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBFDF545236DB7F500D417A1 /* ViewController.swift */; };
 		CBFDF549236DB7F500D417A1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CBFDF547236DB7F500D417A1 /* Main.storyboard */; };
 		CBFDF54B236DB7F800D417A1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CBFDF54A236DB7F800D417A1 /* Assets.xcassets */; };
 		CBFDF54E236DB7F800D417A1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CBFDF54C236DB7F800D417A1 /* LaunchScreen.storyboard */; };
+		CBFDF556236DBA2A00D417A1 /* CameraManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBFDF555236DBA2A00D417A1 /* CameraManager.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		CB5CFEF8236DC9620045AC90 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				CB5CFEFE236DC9680045AC90 /* PromiseKit.framework in Embed Frameworks */,
+				CB5CFEFB236DC9650045AC90 /* PMKFoundation.framework in Embed Frameworks */,
+				CB5CFEF7236DC9620045AC90 /* PMKCoreLocation.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		CB5CFEF5236DC9620045AC90 /* PMKCoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PMKCoreLocation.framework; path = Carthage/Build/iOS/PMKCoreLocation.framework; sourceTree = "<group>"; };
+		CB5CFEF9236DC9650045AC90 /* PMKFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PMKFoundation.framework; path = Carthage/Build/iOS/PMKFoundation.framework; sourceTree = "<group>"; };
+		CB5CFEFC236DC9680045AC90 /* PromiseKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PromiseKit.framework; path = Carthage/Build/iOS/PromiseKit.framework; sourceTree = "<group>"; };
+		CB5CFF00236DD4540045AC90 /* DeferredPromise.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeferredPromise.swift; sourceTree = "<group>"; };
+		CB5CFF04236F06970045AC90 /* UIViewController+Alert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Alert.swift"; sourceTree = "<group>"; };
+		CB5CFF06236F1E590045AC90 /* UIView+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
+		CBB133C02378ACAD007A2AEF /* LoadingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingViewController.swift; sourceTree = "<group>"; };
 		CBFDF53E236DB7F500D417A1 /* Magnify.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Magnify.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CBFDF541236DB7F500D417A1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CBFDF543236DB7F500D417A1 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -24,6 +58,7 @@
 		CBFDF54A236DB7F800D417A1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CBFDF54D236DB7F800D417A1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		CBFDF54F236DB7F800D417A1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CBFDF555236DBA2A00D417A1 /* CameraManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -31,17 +66,31 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CB5CFEFD236DC9680045AC90 /* PromiseKit.framework in Frameworks */,
+				CB5CFEFA236DC9650045AC90 /* PMKFoundation.framework in Frameworks */,
+				CB5CFEF6236DC9620045AC90 /* PMKCoreLocation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		CB5CFEF4236DC9610045AC90 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				CB5CFEFC236DC9680045AC90 /* PromiseKit.framework */,
+				CB5CFEF9236DC9650045AC90 /* PMKFoundation.framework */,
+				CB5CFEF5236DC9620045AC90 /* PMKCoreLocation.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		CBFDF535236DB7F500D417A1 = {
 			isa = PBXGroup;
 			children = (
 				CBFDF540236DB7F500D417A1 /* Magnify */,
 				CBFDF53F236DB7F500D417A1 /* Products */,
+				CB5CFEF4236DC9610045AC90 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -56,12 +105,17 @@
 		CBFDF540236DB7F500D417A1 /* Magnify */ = {
 			isa = PBXGroup;
 			children = (
+				CBFDF54C236DB7F800D417A1 /* LaunchScreen.storyboard */,
+				CBFDF547236DB7F500D417A1 /* Main.storyboard */,
+				CBFDF545236DB7F500D417A1 /* ViewController.swift */,
+				CBB133C02378ACAD007A2AEF /* LoadingViewController.swift */,
+				CB5CFF06236F1E590045AC90 /* UIView+Extension.swift */,
+				CB5CFF04236F06970045AC90 /* UIViewController+Alert.swift */,
+				CB5CFF00236DD4540045AC90 /* DeferredPromise.swift */,
+				CBFDF555236DBA2A00D417A1 /* CameraManager.swift */,
 				CBFDF541236DB7F500D417A1 /* AppDelegate.swift */,
 				CBFDF543236DB7F500D417A1 /* SceneDelegate.swift */,
-				CBFDF545236DB7F500D417A1 /* ViewController.swift */,
-				CBFDF547236DB7F500D417A1 /* Main.storyboard */,
 				CBFDF54A236DB7F800D417A1 /* Assets.xcassets */,
-				CBFDF54C236DB7F800D417A1 /* LaunchScreen.storyboard */,
 				CBFDF54F236DB7F800D417A1 /* Info.plist */,
 			);
 			path = Magnify;
@@ -77,6 +131,8 @@
 				CBFDF53A236DB7F500D417A1 /* Sources */,
 				CBFDF53B236DB7F500D417A1 /* Frameworks */,
 				CBFDF53C236DB7F500D417A1 /* Resources */,
+				CB5CFEF8236DC9620045AC90 /* Embed Frameworks */,
+				CB5CFEFF236DC9AB0045AC90 /* Carthage */,
 			);
 			buildRules = (
 			);
@@ -133,13 +189,42 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		CB5CFEFF236DC9AB0045AC90 /* Carthage */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/Carthage/Build/iOS/PromiseKit.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/PMKCoreLocation.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/PMKFoundation.framework",
+			);
+			name = Carthage;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/usr/local/bin/carthage copy-frameworks\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		CBFDF53A236DB7F500D417A1 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				CBFDF546236DB7F500D417A1 /* ViewController.swift in Sources */,
+				CB5CFF07236F1E5A0045AC90 /* UIView+Extension.swift in Sources */,
 				CBFDF542236DB7F500D417A1 /* AppDelegate.swift in Sources */,
+				CBB133C12378ACAD007A2AEF /* LoadingViewController.swift in Sources */,
+				CBFDF556236DBA2A00D417A1 /* CameraManager.swift in Sources */,
+				CB5CFF05236F06970045AC90 /* UIViewController+Alert.swift in Sources */,
+				CB5CFF01236DD4540045AC90 /* DeferredPromise.swift in Sources */,
 				CBFDF544236DB7F500D417A1 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -286,6 +371,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = H4UQYGEL4C;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = Magnify/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -304,6 +393,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = H4UQYGEL4C;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = Magnify/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
