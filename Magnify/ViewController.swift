@@ -10,9 +10,7 @@ import UIKit
 
 class ViewController: UIViewController {
 
-//    private let camera = CameraManager()
     private(set) var tapGestureRecognizer: UITapGestureRecognizer?
-    private(set) var dblTapGestureRecognizer: UITapGestureRecognizer?
     private var formatter = NumberFormatter()
     weak var delegate: CameraManagerDelegate?
 
@@ -24,20 +22,31 @@ class ViewController: UIViewController {
     @IBAction func resetAction(_ sender: UIButton) {
         CameraManager.shared.reset()
     }
-    
+    @IBOutlet weak var lightView: UIVisualEffectView! { didSet {
+        lightView.layer.cornerRadius = 15
+        lightView.layer.masksToBounds = true
+        lightView.layer.borderWidth = 0.5
+        lightView.layer.borderColor = UIColor.black.cgColor
+    }}
+    @IBOutlet weak var zoomView: UIVisualEffectView!  { didSet {
+           zoomView.layer.cornerRadius = 15
+           zoomView.layer.masksToBounds = true
+           zoomView.layer.borderWidth = 0.5
+           zoomView.layer.borderColor = UIColor.black.cgColor
+       }}
+    @IBOutlet weak var resetView: UIVisualEffectView! { didSet {
+        resetView.layer.cornerRadius = 30
+        resetView.layer.masksToBounds = true
+        resetView.layer.borderWidth = 0.5
+        resetView.layer.borderColor = UIColor.black.cgColor
+    }}
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
-//        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(tapped))
-//        tapGestureRecognizer.delegate = self
-//        self.view.addGestureRecognizer(tapGestureRecognizer)
-//        self.tapGestureRecognizer = tapGestureRecognizer
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(tapped))
+        self.view.addGestureRecognizer(tapGestureRecognizer)
      
-        let dblTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(doubleTapped))
-//        dblTapGestureRecognizer.delegate = self
-        dblTapGestureRecognizer.numberOfTouchesRequired = 2
-        self.contentView.addGestureRecognizer(dblTapGestureRecognizer)
-        self.dblTapGestureRecognizer = dblTapGestureRecognizer
 
         let panGestureRecognizer = UIPanGestureRecognizer(target: CameraManager.shared, action: #selector(CameraManager.panGesture(_:)))
         self.contentView.addGestureRecognizer(panGestureRecognizer)
@@ -82,18 +91,10 @@ class ViewController: UIViewController {
     }
     
     @objc private func tapped() {
-        if Int(self.flashView.alpha) == 0 {
-//            self.clearPhotoAction()
-//        } else {
-            self.takePhotoAction()
-        }
-    }
-    
-    @objc private func doubleTapped() {
         if Int(self.flashView.alpha) == 1 {
             self.clearPhotoAction()
-//        } else {
-//            self.takePhotoAction()
+        } else {
+            self.takePhotoAction()
         }
     }
     
@@ -139,17 +140,6 @@ class ViewController: UIViewController {
     }
 }
 
-//extension ViewController: UIGestureRecognizerDelegate {
-//    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer,
-//             shouldRequireFailureOf otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-//       // Don't recognize a single tap until a double-tap fails.
-//       if gestureRecognizer == self.tapGestureRecognizer &&
-//              otherGestureRecognizer == self.dblTapGestureRecognizer {
-//          return true
-//       }
-//       return false
-//    }
-//}
 extension ViewController: CameraManagerDelegate {
     func zoomFactor(_ zoom: CGFloat) {
         self.zoomFactorLabel.text = self.formatter.string(from: zoom as NSNumber)
