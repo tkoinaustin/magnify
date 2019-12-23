@@ -9,18 +9,37 @@
 import UIKit
 
 class ViewController: UIViewController {
+    
+    enum displayMode {
+        case camera
+        case picture
+    }
 
     private(set) var tapGestureRecognizer: UITapGestureRecognizer?
+    private(set) var pinchGestureRecognizer: UIPinchGestureRecognizer?
     private var formatter = NumberFormatter()
     weak var delegate: CameraManagerDelegate?
+    private var mode: displayMode = .camera { didSet {
+        switch mode {
+            case .camera:
+                self.resetButton.setTitle("Reset", for: .normal)
+            case .picture:
+                self.photoView.frame = self.view.frame
+                self.resetButton.setTitle("Clear", for: .normal)
+        }
+    }}
 
+    @IBOutlet weak var resetButton: UIButton!
     @IBOutlet private weak var contentView: UIView!
     @IBOutlet private weak var flashView: UIView!
     @IBOutlet private weak var photoView: UIImageView!
     @IBOutlet private weak var zoomFactorLabel: UILabel!
     @IBOutlet private weak var brightnessLabel: UILabel!
     @IBAction func resetAction(_ sender: UIButton) {
-        CameraManager.shared.reset()
+        switch self.mode {
+            case .camera: CameraManager.shared.reset()
+            case .picture: self.clearPhotoAction()
+        }
     }
     @IBOutlet weak var lightView: UIVisualEffectView! { didSet {
         lightView.layer.cornerRadius = 15
@@ -33,7 +52,7 @@ class ViewController: UIViewController {
            zoomView.layer.masksToBounds = true
            zoomView.layer.borderWidth = 0.5
            zoomView.layer.borderColor = UIColor.black.cgColor
-       }}
+    }}
     @IBOutlet weak var resetView: UIVisualEffectView! { didSet {
         resetView.layer.cornerRadius = 30
         resetView.layer.masksToBounds = true
@@ -45,7 +64,7 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(tapped))
-        self.view.addGestureRecognizer(tapGestureRecognizer)
+        self.contentView.addGestureRecognizer(tapGestureRecognizer)
      
 
         let panGestureRecognizer = UIPanGestureRecognizer(target: CameraManager.shared, action: #selector(CameraManager.panGesture(_:)))
@@ -60,9 +79,13 @@ class ViewController: UIViewController {
             let gesture = UISwipeGestureRecognizer(target: CameraManager.shared, action: #selector(CameraManager.swipeGesture(_:)))
             gesture.direction = direction
             gesture.delegate = CameraManager.shared
-            self.view.addGestureRecognizer(gesture)
+            self.contentView.addGestureRecognizer(gesture)
         }
         
+        let pinchGestureRecognizer = UIPinchGestureRecognizer(target: self, action: #selector(pinched(_:)))
+        self.view.addGestureRecognizer(pinchGestureRecognizer)
+        self.pinchGestureRecognizer = pinchGestureRecognizer
+
         self.flashView.alpha = 0
         CameraManager.shared.delegate = self
     }
@@ -91,14 +114,30 @@ class ViewController: UIViewController {
     }
     
     @objc private func tapped() {
-        if Int(self.flashView.alpha) == 1 {
-            self.clearPhotoAction()
-        } else {
-            self.takePhotoAction()
-        }
+        self.takePhotoAction()
     }
     
+    @objc private func pinched(_ sender: UIPinchGestureRecognizer) {
+//        print("sender.scale: \(sender.scale)")
+//        let startingwidth = self.contentView.frame.width
+//        let currentwidth = self.photoView.frame.width
+        let ratio = self.photoView.frame.width / self.contentView.frame.width
+//        print ("\(ratio): \(sender.scale)")
+        let scale = ratio * sender.scale < 1.0 ? 1.0 / ratio : sender.scale
+//        print("scale: \(scale)\n")
+
+        switch sender.state {
+            case .began: ()
+            case .changed:
+                self.photoView.transform = self.photoView.transform.scaledBy(x: scale, y: scale)
+                sender.scale = 1.0
+            case .ended: ()
+            default: ()
+        }
+    }
+
     @objc private func takePhotoAction() {
+        self.mode = .picture
         _ = self.activityIndicator().show()
         flash {
             CameraManager.shared.captureImage()
@@ -121,6 +160,7 @@ class ViewController: UIViewController {
     }
     
     @objc private func clearPhotoAction() {
+        self.mode = .camera
         CameraManager.shared.torch = true
         self.flashView.alpha = 0
         self.photoView.image = nil
@@ -146,7 +186,6 @@ extension ViewController: CameraManagerDelegate {
     }
     
     func brightness(_ brightness: Float) {
-        print("Brightness: \(brightness)")
         let bright = Int(max(brightness * 100, 0))
         if bright == 0 {
             self.brightnessLabel.text = "Off"
