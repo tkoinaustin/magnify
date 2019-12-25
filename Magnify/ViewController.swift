@@ -16,18 +16,29 @@ class ViewController: UIViewController {
     }
 
     private(set) var tapGestureRecognizer: UITapGestureRecognizer?
-    private(set) var pinchGestureRecognizer: UIPinchGestureRecognizer?
+//    private(set) var pinchGestureRecognizer: UIPinchGestureRecognizer?
     private var formatter = NumberFormatter()
+    private var currentAnchor: CGPoint!
     weak var delegate: CameraManagerDelegate?
     private var mode: displayMode = .camera { didSet {
         switch mode {
             case .camera:
                 self.resetButton.setTitle("Reset", for: .normal)
+                CameraManager.shared.torch = true
+                self.flashView.alpha = 0
+                self.photoView.image = nil
+                self.photoView.isHidden = true
             case .picture:
+                self.photoView.transform = .identity
                 self.photoView.frame = self.view.frame
                 self.resetButton.setTitle("Clear", for: .normal)
         }
     }}
+
+    var startingWidth: CGFloat = 0
+    var fullWidth: CGFloat = 1000
+    var deltaX: CGFloat = 0
+    var deltaY: CGFloat = 0
 
     @IBOutlet weak var resetButton: UIButton!
     @IBOutlet private weak var contentView: UIView!
@@ -66,9 +77,12 @@ class ViewController: UIViewController {
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(tapped))
         self.contentView.addGestureRecognizer(tapGestureRecognizer)
      
+//        let cameraPinchGestureRecognizer = UIPinchGestureRecognizer(target: self, action: #selector(picturePinched(_:)))
+//        self.contentView.addGestureRecognizer(cameraPinchGestureRecognizer)
 
-        let panGestureRecognizer = UIPanGestureRecognizer(target: CameraManager.shared, action: #selector(CameraManager.panGesture(_:)))
-        self.contentView.addGestureRecognizer(panGestureRecognizer)
+        let cameraPanGestureRecognizer = UIPanGestureRecognizer(target: CameraManager.shared, action: #selector(CameraManager.panGesture(_:)))
+        self.contentView.addGestureRecognizer(cameraPanGestureRecognizer)
+        
         self.formatter.numberStyle = .decimal
         self.formatter.locale = .current
         self.formatter.maximumFractionDigits = 1
@@ -82,9 +96,10 @@ class ViewController: UIViewController {
             self.contentView.addGestureRecognizer(gesture)
         }
         
-        let pinchGestureRecognizer = UIPinchGestureRecognizer(target: self, action: #selector(pinched(_:)))
-        self.view.addGestureRecognizer(pinchGestureRecognizer)
-        self.pinchGestureRecognizer = pinchGestureRecognizer
+        let picturePinchGestureRecognizer = UIPinchGestureRecognizer(target: self, action: #selector(picturePinched(_:)))
+        self.view.addGestureRecognizer(picturePinchGestureRecognizer)
+        let picturePanGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(picturePanned(_:)))
+        self.view.addGestureRecognizer(picturePanGestureRecognizer)
 
         self.flashView.alpha = 0
         CameraManager.shared.delegate = self
@@ -117,23 +132,66 @@ class ViewController: UIViewController {
         self.takePhotoAction()
     }
     
-    @objc private func pinched(_ sender: UIPinchGestureRecognizer) {
-//        print("sender.scale: \(sender.scale)")
-//        let startingwidth = self.contentView.frame.width
-//        let currentwidth = self.photoView.frame.width
+    @objc func picturePanned(_ sender: UIPanGestureRecognizer) {
+        let translation = sender.translation(in: sender.view)
+        let moveRightMax = max(-self.photoView.frame.minX, 0)
+        let moveLeftMax = min(375 - self.photoView.frame.maxX, 0)
+        let moveX = min(max(translation.x, moveLeftMax),moveRightMax)
+        let moveDownMax = max(-self.photoView.frame.minY, 0)
+        let moveUpMax = min(812 - self.photoView.frame.maxY, 0)
+        let moveY = min(max(translation.y, moveUpMax),moveDownMax)
+//        self.photoView.center = CGPoint(x: self.photoView.center.x + moveX, y: self.photoView.center.y + moveY)
+//        print("moveX: \(moveX), moveY: \(moveY)")
+//        print(self.extents)
+//        sender.setTranslation(.zero, in: sender.view)
+        self.photoView.transform = self.photoView.transform.translatedBy(x: moveX, y: moveY)
+        sender.setTranslation(.zero, in: sender.view)
+    }
+    
+    @objc private func picturePinched(_ sender: UIPinchGestureRecognizer) {
         let ratio = self.photoView.frame.width / self.contentView.frame.width
-//        print ("\(ratio): \(sender.scale)")
         let scale = ratio * sender.scale < 1.0 ? 1.0 / ratio : sender.scale
-//        print("scale: \(scale)\n")
-
+ 
         switch sender.state {
-            case .began: ()
+            case .began:
+                print(self.extents)
+                let startingWidth = self.photoView.frame.maxX - self.photoView.frame.minX
+                fullWidth = startingWidth - 375
+                deltaX = -self.photoView.frame.midX + self.photoView.bounds.midX
+                deltaY = -self.photoView.frame.midY + self.photoView.bounds.midY
             case .changed:
                 self.photoView.transform = self.photoView.transform.scaledBy(x: scale, y: scale)
+                
+//                let moveRightMax = max(-self.photoView.frame.minX, 0)
+//                let moveLeftMax = min(375 - self.photoView.frame.maxX, 0)
+//                let moveX = min(max(translation.x, moveLeftMax),moveRightMax)
+//                let moveDownMax = max(-self.photoView.frame.minY, 0)
+//                let moveUpMax = min(812 - self.photoView.frame.maxY, 0)
+//                let moveY = min(max(translation.y, moveUpMax),moveDownMax)
+
+                
+                let currentWidth = self.photoView.frame.maxX - self.photoView.frame.minX
+                if fullWidth > 0 {
+                    let moveX = (1 - scale) * deltaX * (currentWidth - 375) / fullWidth
+                    let moveY = (1 - scale) * deltaY * (currentWidth - 375) / fullWidth
+                    self.photoView.center = CGPoint(x: self.photoView.center.x + moveX, y: self.photoView.center.y + moveY)
+                    print("moveX: \(moveX), moveY: \(moveY), scale: \(scale)")
+                }
                 sender.scale = 1.0
-            case .ended: ()
+            case .ended:
+                print(self.extents)
+                print("Done with zoom")
             default: ()
         }
+//        print(self.extents)
+     }
+    
+    var extents: String {
+        let left = Int(self.photoView.frame.minX)
+        let top = Int(self.photoView.frame.minY)
+        let right = Int(self.photoView.frame.maxX)
+        let bottom = Int(self.photoView.frame.maxY)
+        return "Left: \(left), Right: \(right), Top: \(top), Bottom: \(bottom)"
     }
 
     @objc private func takePhotoAction() {
@@ -153,18 +211,14 @@ class ViewController: UIViewController {
                         .done { _ in
                             print("Error taking picture: \(message)")
                     }.cauterize()
-            }.finally {
-                self.activityIndicator().hide()
-            }
+                }.finally {
+                    self.activityIndicator().hide()
+                }
         }
     }
     
     @objc private func clearPhotoAction() {
         self.mode = .camera
-        CameraManager.shared.torch = true
-        self.flashView.alpha = 0
-        self.photoView.image = nil
-        self.photoView.isHidden = true
     }
 
     private func flash(completion: (() -> Void)? = nil) {
