@@ -140,43 +140,32 @@ class ViewController: UIViewController {
         let moveDownMax = max(-self.photoView.frame.minY, 0)
         let moveUpMax = min(812 - self.photoView.frame.maxY, 0)
         let moveY = min(max(translation.y, moveUpMax),moveDownMax)
-//        self.photoView.center = CGPoint(x: self.photoView.center.x + moveX, y: self.photoView.center.y + moveY)
-//        print("moveX: \(moveX), moveY: \(moveY)")
-//        print(self.extents)
-//        sender.setTranslation(.zero, in: sender.view)
-        self.photoView.transform = self.photoView.transform.translatedBy(x: moveX, y: moveY)
+        self.photoView.center = CGPoint(x: self.photoView.center.x + moveX, y: self.photoView.center.y + moveY)
         sender.setTranslation(.zero, in: sender.view)
     }
     
     @objc private func picturePinched(_ sender: UIPinchGestureRecognizer) {
         let ratio = self.photoView.frame.width / self.contentView.frame.width
         let scale = ratio * sender.scale < 1.0 ? 1.0 / ratio : sender.scale
- 
+        var moveX: CGFloat = 0
+        var moveY: CGFloat = 0
+        let unzoomedWidth = self.photoView.bounds.width
+        let unzoomedHeight = self.photoView.bounds.height
         switch sender.state {
             case .began:
                 print(self.extents)
                 let startingWidth = self.photoView.frame.maxX - self.photoView.frame.minX
-                fullWidth = startingWidth - 375
+                fullWidth = startingWidth - unzoomedWidth
                 deltaX = -self.photoView.frame.midX + self.photoView.bounds.midX
                 deltaY = -self.photoView.frame.midY + self.photoView.bounds.midY
             case .changed:
                 self.photoView.transform = self.photoView.transform.scaledBy(x: scale, y: scale)
+                if self.photoView.frame.minX > 0 { moveX = -self.photoView.frame.minX }
+                else if self.photoView.frame.maxX < unzoomedWidth { moveX = unzoomedWidth - self.photoView.frame.maxX }
+                if self.photoView.frame.minY > 0 { moveY = -self.photoView.frame.minY }
+                else if self.photoView.frame.maxY < unzoomedHeight { moveY = unzoomedHeight - self.photoView.frame.maxY }
+                self.photoView.transform = self.photoView.transform.translatedBy(x: moveX, y: moveY)
                 
-//                let moveRightMax = max(-self.photoView.frame.minX, 0)
-//                let moveLeftMax = min(375 - self.photoView.frame.maxX, 0)
-//                let moveX = min(max(translation.x, moveLeftMax),moveRightMax)
-//                let moveDownMax = max(-self.photoView.frame.minY, 0)
-//                let moveUpMax = min(812 - self.photoView.frame.maxY, 0)
-//                let moveY = min(max(translation.y, moveUpMax),moveDownMax)
-
-                
-                let currentWidth = self.photoView.frame.maxX - self.photoView.frame.minX
-                if fullWidth > 0 {
-                    let moveX = (1 - scale) * deltaX * (currentWidth - 375) / fullWidth
-                    let moveY = (1 - scale) * deltaY * (currentWidth - 375) / fullWidth
-                    self.photoView.center = CGPoint(x: self.photoView.center.x + moveX, y: self.photoView.center.y + moveY)
-                    print("moveX: \(moveX), moveY: \(moveY), scale: \(scale)")
-                }
                 sender.scale = 1.0
             case .ended:
                 print(self.extents)
