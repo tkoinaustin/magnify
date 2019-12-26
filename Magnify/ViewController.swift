@@ -77,9 +77,6 @@ class ViewController: UIViewController {
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(tapped))
         self.contentView.addGestureRecognizer(tapGestureRecognizer)
      
-//        let cameraPinchGestureRecognizer = UIPinchGestureRecognizer(target: self, action: #selector(picturePinched(_:)))
-//        self.contentView.addGestureRecognizer(cameraPinchGestureRecognizer)
-
         let cameraPanGestureRecognizer = UIPanGestureRecognizer(target: CameraManager.shared, action: #selector(CameraManager.panGesture(_:)))
         self.contentView.addGestureRecognizer(cameraPanGestureRecognizer)
         
@@ -154,13 +151,7 @@ class ViewController: UIViewController {
         let unzoomedHeight = self.photoView.bounds.height
         switch sender.state {
             case .began:
-                let anchor = self.setAnchor(self.photoView)
-                self.photoView.layer.anchorPoint = anchor
                 print(self.extents)
-                let startingWidth = self.photoView.frame.maxX - self.photoView.frame.minX
-                fullWidth = startingWidth - unzoomedWidth
-                deltaX = -self.photoView.frame.midX + self.photoView.bounds.midX
-                deltaY = -self.photoView.frame.midY + self.photoView.bounds.midY
             case .changed:
                 self.photoView.transform = self.photoView.transform.scaledBy(x: scale, y: scale)
                 
@@ -170,40 +161,18 @@ class ViewController: UIViewController {
                 if self.photoView.frame.minY > 0 { moveY = -self.photoView.frame.minY }
                 else if self.photoView.frame.maxY < unzoomedHeight { moveY = unzoomedHeight - self.photoView.frame.maxY }
                 
-                self.photoView.transform = self.photoView.transform.translatedBy(x: moveX, y: moveY)
-                
+                if moveX != 0 || moveY != 0 {
+                    print("adjusting center by (\(moveX), \(moveY))")
+                    self.photoView.transform = self.photoView.transform.translatedBy(x: moveX, y: moveY)
+                }
                 sender.scale = 1.0
             case .ended:
                 print(self.extents)
                 print("Done with zoom")
             default: ()
         }
-//        print(self.extents)
      }
     
-    private func setAnchor(_ view: UIView) -> CGPoint {
-        let ratio = (view.frame.width - view.bounds.width) / view.frame.width
-        let nozoomCenter = CGPoint(x: view.bounds.midX, y: view.bounds.midY)
-        let zoomedCenter = CGPoint(x: view.frame.midX, y: view.frame.midY)
-        let delta = nozoomCenter - zoomedCenter
-        let adjustedDelta = delta * ratio
-        let anchorPixels = nozoomCenter + adjustedDelta
-        let x = max(min(anchorPixels.x / view.bounds.width, 1), 0)
-        let y = max(min(anchorPixels.y / view.bounds.height, 1), 0)
-        let anchor = CGPoint(x: x, y: y)
-//        assert(anchor.x >= 0, "X is < 0")
-//        assert(anchor.x <= 1, "X is > 1")
-//        assert(anchor.y >= 0, "Y is < 0")
-//        assert(anchor.y <= 1, "Y is > 1")
-        print("\nbounds: \(view.bounds)")
-        print("frame: \(view.frame)")
-        print("ratio: \(ratio)")
-        print("delta: \(delta)")
-        print("adjustedDelta: \(adjustedDelta)")
-        print("anchorPixels: \(anchorPixels)")
-        print("anchor: \(anchor)\n")
-        return anchor
-    }
     
     var extents: String {
         let left = Int(self.photoView.frame.minX)
@@ -223,6 +192,7 @@ class ViewController: UIViewController {
                     CameraManager.shared.torch = false
                     this.photoView.image = UIImage(data: data)
                     this.photoView.isHidden = false
+                    this.photoView.transform = .identity
                     this.flashView.alpha = 1
                 }.catch {error in
                     let message = (error as? CameraManagerError)?.message ?? "Something went wrong"
