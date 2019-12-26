@@ -142,6 +142,7 @@ class ViewController: UIViewController {
         let moveY = min(max(translation.y, moveUpMax),moveDownMax)
         self.photoView.center = CGPoint(x: self.photoView.center.x + moveX, y: self.photoView.center.y + moveY)
         sender.setTranslation(.zero, in: sender.view)
+//        print(self.extents)
     }
     
     @objc private func picturePinched(_ sender: UIPinchGestureRecognizer) {
@@ -153,6 +154,8 @@ class ViewController: UIViewController {
         let unzoomedHeight = self.photoView.bounds.height
         switch sender.state {
             case .began:
+                let anchor = self.setAnchor(self.photoView)
+                self.photoView.layer.anchorPoint = anchor
                 print(self.extents)
                 let startingWidth = self.photoView.frame.maxX - self.photoView.frame.minX
                 fullWidth = startingWidth - unzoomedWidth
@@ -160,10 +163,13 @@ class ViewController: UIViewController {
                 deltaY = -self.photoView.frame.midY + self.photoView.bounds.midY
             case .changed:
                 self.photoView.transform = self.photoView.transform.scaledBy(x: scale, y: scale)
+                
                 if self.photoView.frame.minX > 0 { moveX = -self.photoView.frame.minX }
                 else if self.photoView.frame.maxX < unzoomedWidth { moveX = unzoomedWidth - self.photoView.frame.maxX }
+                
                 if self.photoView.frame.minY > 0 { moveY = -self.photoView.frame.minY }
                 else if self.photoView.frame.maxY < unzoomedHeight { moveY = unzoomedHeight - self.photoView.frame.maxY }
+                
                 self.photoView.transform = self.photoView.transform.translatedBy(x: moveX, y: moveY)
                 
                 sender.scale = 1.0
@@ -174,6 +180,30 @@ class ViewController: UIViewController {
         }
 //        print(self.extents)
      }
+    
+    private func setAnchor(_ view: UIView) -> CGPoint {
+        let ratio = (view.frame.width - view.bounds.width) / view.frame.width
+        let nozoomCenter = CGPoint(x: view.bounds.midX, y: view.bounds.midY)
+        let zoomedCenter = CGPoint(x: view.frame.midX, y: view.frame.midY)
+        let delta = nozoomCenter - zoomedCenter
+        let adjustedDelta = delta * ratio
+        let anchorPixels = nozoomCenter + adjustedDelta
+        let x = max(min(anchorPixels.x / view.bounds.width, 1), 0)
+        let y = max(min(anchorPixels.y / view.bounds.height, 1), 0)
+        let anchor = CGPoint(x: x, y: y)
+//        assert(anchor.x >= 0, "X is < 0")
+//        assert(anchor.x <= 1, "X is > 1")
+//        assert(anchor.y >= 0, "Y is < 0")
+//        assert(anchor.y <= 1, "Y is > 1")
+        print("\nbounds: \(view.bounds)")
+        print("frame: \(view.frame)")
+        print("ratio: \(ratio)")
+        print("delta: \(delta)")
+        print("adjustedDelta: \(adjustedDelta)")
+        print("anchorPixels: \(anchorPixels)")
+        print("anchor: \(anchor)\n")
+        return anchor
+    }
     
     var extents: String {
         let left = Int(self.photoView.frame.minX)
