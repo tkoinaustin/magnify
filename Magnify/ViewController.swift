@@ -17,7 +17,8 @@ class ViewController: UIViewController {
 
     private(set) var tapGestureRecognizer: UITapGestureRecognizer?
 //    private(set) var pinchGestureRecognizer: UIPinchGestureRecognizer?
-    private var formatter = NumberFormatter()
+    private var formatter1 = NumberFormatter()
+    private var formatter3 = NumberFormatter()
     private var currentAnchor: CGPoint!
     weak var delegate: CameraManagerDelegate?
     private var mode: displayMode = .camera { didSet {
@@ -80,10 +81,15 @@ class ViewController: UIViewController {
         let cameraPanGestureRecognizer = UIPanGestureRecognizer(target: CameraManager.shared, action: #selector(CameraManager.panGesture(_:)))
         self.contentView.addGestureRecognizer(cameraPanGestureRecognizer)
         
-        self.formatter.numberStyle = .decimal
-        self.formatter.locale = .current
-        self.formatter.maximumFractionDigits = 1
-        self.formatter.minimumFractionDigits = 1
+        self.formatter1.numberStyle = .decimal
+        self.formatter1.locale = .current
+        self.formatter1.maximumFractionDigits = 1
+        self.formatter1.minimumFractionDigits = 1
+        
+        self.formatter3.numberStyle = .decimal
+        self.formatter3.locale = .current
+        self.formatter3.maximumFractionDigits = 1
+        self.formatter3.minimumFractionDigits = 3
 
         let directions: [UISwipeGestureRecognizer.Direction] = [.right, .left, .up, .down]
         for direction in directions {
@@ -130,16 +136,21 @@ class ViewController: UIViewController {
     }
     
     @objc func picturePanned(_ sender: UIPanGestureRecognizer) {
+        let ratio = self.photoView.frame.width / self.contentView.frame.width
         let translation = sender.translation(in: sender.view)
         let moveRightMax = max(-self.photoView.frame.minX, 0)
-        let moveLeftMax = min(375 - self.photoView.frame.maxX, 0)
+        let moveLeftMax = min(self.photoView.bounds.width - self.photoView.frame.maxX, 0)
         let moveX = min(max(translation.x, moveLeftMax),moveRightMax)
         let moveDownMax = max(-self.photoView.frame.minY, 0)
-        let moveUpMax = min(812 - self.photoView.frame.maxY, 0)
+        let moveUpMax = min(self.photoView.bounds.height - self.photoView.frame.maxY, 0)
         let moveY = min(max(translation.y, moveUpMax),moveDownMax)
-        self.photoView.center = CGPoint(x: self.photoView.center.x + moveX, y: self.photoView.center.y + moveY)
+        let anchor = self.photoView.layer.anchorPoint
+        
+        self.photoView.layer.anchorPoint = CGPoint(x: anchor.x - moveX / self.photoView.frame.width, y: anchor.y - moveY / self.photoView.frame.height )
+        let x = self.formatter3.string(from: moveX * ratio as NSNumber) ?? "?"
+        let y = self.formatter3.string(from: moveY * ratio as NSNumber) ?? "?"
+        print("\(self.anchor), scale move: (\(x), \(y)), \(self.extents)") //", movement: (\(translation.x), \(translation.y))")
         sender.setTranslation(.zero, in: sender.view)
-//        print(self.extents)
     }
     
     @objc private func picturePinched(_ sender: UIPinchGestureRecognizer) {
@@ -161,11 +172,12 @@ class ViewController: UIViewController {
                 if self.photoView.frame.minY > 0 { moveY = -self.photoView.frame.minY }
                 else if self.photoView.frame.maxY < unzoomedHeight { moveY = unzoomedHeight - self.photoView.frame.maxY }
                 
-                if moveX != 0 || moveY != 0 {
-                    print("adjusting center by (\(moveX), \(moveY))")
-                    self.photoView.transform = self.photoView.transform.translatedBy(x: moveX, y: moveY)
-                }
+//                if moveX != 0 || moveY != 0 {
+//                    print("adjusting center by (\(moveX), \(moveY))")
+//                    self.photoView.transform = self.photoView.transform.translatedBy(x: moveX, y: moveY)
+//                }
                 sender.scale = 1.0
+                print("anchor after scaling: \(self.photoView.layer.anchorPoint)")
             case .ended:
                 print(self.extents)
                 print("Done with zoom")
@@ -173,13 +185,40 @@ class ViewController: UIViewController {
         }
      }
     
-    
+        private func setAnchor(_ view: UIView) -> CGPoint {
+            let ratio = (view.frame.width - view.bounds.width) / view.frame.width
+            let nozoomCenter = CGPoint(x: view.bounds.midX, y: view.bounds.midY)
+            let zoomedCenter = CGPoint(x: view.frame.midX, y: view.frame.midY)
+            let delta = nozoomCenter - zoomedCenter
+            let adjustedDelta = delta * ratio
+            let anchorPixels = nozoomCenter + adjustedDelta
+            let x = max(min(anchorPixels.x / view.bounds.width, 1), 0)
+            let y = max(min(anchorPixels.y / view.bounds.height, 1), 0)
+            let anchor = CGPoint(x: x, y: y)
+            print("\nbounds: \(view.bounds)")
+            print("frame: \(view.frame)")
+            print("ratio: \(ratio)")
+            print("delta: \(delta)")
+            print("adjustedDelta: \(adjustedDelta)")
+            print("anchorPixels: \(anchorPixels)")
+            print("anchor: \(anchor)\n")
+            return anchor
+        }
+
     var extents: String {
         let left = Int(self.photoView.frame.minX)
         let top = Int(self.photoView.frame.minY)
         let right = Int(self.photoView.frame.maxX)
         let bottom = Int(self.photoView.frame.maxY)
-        return "Left: \(left), Right: \(right), Top: \(top), Bottom: \(bottom)"
+//        return "Left: \(left), Right: \(right), Top: \(top), Bottom: \(bottom)"
+        return "origin: (\(left), \(top)), size: (\(right - left), \(bottom - top))"
+    }
+    
+    var anchor: String {
+        let point = self.photoView.layer.anchorPoint
+        let x = self.formatter3.string(from: point.x as NSNumber) ?? "?"
+        let y = self.formatter3.string(from: point.y as NSNumber) ?? "?"
+        return "anchor: (\(x), \(y))"
     }
 
     @objc private func takePhotoAction() {
@@ -192,6 +231,7 @@ class ViewController: UIViewController {
                     CameraManager.shared.torch = false
                     this.photoView.image = UIImage(data: data)
                     this.photoView.isHidden = false
+                    this.photoView.layer.anchorPoint = CGPoint(x: 0.5, y: 0.5)
                     this.photoView.transform = .identity
                     this.flashView.alpha = 1
                 }.catch {error in
@@ -225,7 +265,7 @@ class ViewController: UIViewController {
 
 extension ViewController: CameraManagerDelegate {
     func zoomFactor(_ zoom: CGFloat) {
-        self.zoomFactorLabel.text = self.formatter.string(from: zoom as NSNumber)
+        self.zoomFactorLabel.text = self.formatter1.string(from: zoom as NSNumber)
     }
     
     func brightness(_ brightness: Float) {
