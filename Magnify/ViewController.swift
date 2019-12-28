@@ -16,7 +16,6 @@ class ViewController: UIViewController {
     }
 
     private(set) var tapGestureRecognizer: UITapGestureRecognizer?
-//    private(set) var pinchGestureRecognizer: UIPinchGestureRecognizer?
     private var formatter1 = NumberFormatter()
     private var formatter3 = NumberFormatter()
     private var currentAnchor: CGPoint!
@@ -99,7 +98,7 @@ class ViewController: UIViewController {
             self.contentView.addGestureRecognizer(gesture)
         }
         
-        let picturePinchGestureRecognizer = UIPinchGestureRecognizer(target: self, action: #selector(picturePinched(_:)))
+        let picturePinchGestureRecognizer = UIPinchGestureRecognizer(target: self, action: #selector(pictureZoomed))
         self.view.addGestureRecognizer(picturePinchGestureRecognizer)
         let picturePanGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(picturePanned(_:)))
         self.view.addGestureRecognizer(picturePanGestureRecognizer)
@@ -149,11 +148,18 @@ class ViewController: UIViewController {
         self.photoView.layer.anchorPoint = CGPoint(x: anchor.x - moveX / self.photoView.frame.width, y: anchor.y - moveY / self.photoView.frame.height )
         let x = self.formatter3.string(from: moveX * ratio as NSNumber) ?? "?"
         let y = self.formatter3.string(from: moveY * ratio as NSNumber) ?? "?"
-        print("\(self.anchor), scale move: (\(x), \(y)), \(self.extents)") //", movement: (\(translation.x), \(translation.y))")
+        print("\(self.anchor), scale move: (\(x), \(y)), \(self.extents)")
         sender.setTranslation(.zero, in: sender.view)
     }
     
-    @objc private func picturePinched(_ sender: UIPinchGestureRecognizer) {
+    @objc private func pictureZoomed(_ sender: UIPinchGestureRecognizer) {
+        switch self.mode {
+            case .camera: (CameraManager.shared.zoomGesture(sender))
+            case .picture: (self.zoomPicture(sender))
+        }
+    }
+    
+    private func zoomPicture(_ sender: UIPinchGestureRecognizer) {
         let ratio = self.photoView.frame.width / self.contentView.frame.width
         let scale = ratio * sender.scale < 1.0 ? 1.0 / ratio : sender.scale
         var moveX: CGFloat = 0
@@ -172,12 +178,12 @@ class ViewController: UIViewController {
                 if self.photoView.frame.minY > 0 { moveY = -self.photoView.frame.minY }
                 else if self.photoView.frame.maxY < unzoomedHeight { moveY = unzoomedHeight - self.photoView.frame.maxY }
                 
-//                if moveX != 0 || moveY != 0 {
-//                    print("adjusting center by (\(moveX), \(moveY))")
-//                    self.photoView.transform = self.photoView.transform.translatedBy(x: moveX, y: moveY)
-//                }
+                if moveX != 0 || moveY != 0 {
+                    print("adjusting center by (\(moveX), \(moveY))")
+                    self.photoView.transform = self.photoView.transform.translatedBy(x: moveX, y: moveY)
+                }
+                
                 sender.scale = 1.0
-                print("anchor after scaling: \(self.photoView.layer.anchorPoint)")
             case .ended:
                 print(self.extents)
                 print("Done with zoom")
@@ -185,25 +191,25 @@ class ViewController: UIViewController {
         }
      }
     
-        private func setAnchor(_ view: UIView) -> CGPoint {
-            let ratio = (view.frame.width - view.bounds.width) / view.frame.width
-            let nozoomCenter = CGPoint(x: view.bounds.midX, y: view.bounds.midY)
-            let zoomedCenter = CGPoint(x: view.frame.midX, y: view.frame.midY)
-            let delta = nozoomCenter - zoomedCenter
-            let adjustedDelta = delta * ratio
-            let anchorPixels = nozoomCenter + adjustedDelta
-            let x = max(min(anchorPixels.x / view.bounds.width, 1), 0)
-            let y = max(min(anchorPixels.y / view.bounds.height, 1), 0)
-            let anchor = CGPoint(x: x, y: y)
-            print("\nbounds: \(view.bounds)")
-            print("frame: \(view.frame)")
-            print("ratio: \(ratio)")
-            print("delta: \(delta)")
-            print("adjustedDelta: \(adjustedDelta)")
-            print("anchorPixels: \(anchorPixels)")
-            print("anchor: \(anchor)\n")
-            return anchor
-        }
+    private func setAnchor(_ view: UIView) -> CGPoint {
+        let ratio = (view.frame.width - view.bounds.width) / view.frame.width
+        let nozoomCenter = CGPoint(x: view.bounds.midX, y: view.bounds.midY)
+        let zoomedCenter = CGPoint(x: view.frame.midX, y: view.frame.midY)
+        let delta = nozoomCenter - zoomedCenter
+        let adjustedDelta = delta * ratio
+        let anchorPixels = nozoomCenter + adjustedDelta
+        let x = max(min(anchorPixels.x / view.bounds.width, 1), 0)
+        let y = max(min(anchorPixels.y / view.bounds.height, 1), 0)
+        let anchor = CGPoint(x: x, y: y)
+        print("\nbounds: \(view.bounds)")
+        print("frame: \(view.frame)")
+        print("ratio: \(ratio)")
+        print("delta: \(delta)")
+        print("adjustedDelta: \(adjustedDelta)")
+        print("anchorPixels: \(anchorPixels)")
+        print("anchor: \(anchor)\n")
+        return anchor
+    }
 
     var extents: String {
         let left = Int(self.photoView.frame.minX)

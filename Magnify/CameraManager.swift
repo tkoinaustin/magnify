@@ -247,7 +247,7 @@ extension CameraManager {
                 self.action = .torch
             case .up, .down:
                 print("Swiped vertical")
-                self.action = .zoom
+//                self.action = .zoom
             default:
                 self.action = .undefined
             }
@@ -326,6 +326,46 @@ extension CameraManager {
             default: self.action = .undefined
         }
     }
+    
+    @objc func zoomGesture(_ sender: UIPinchGestureRecognizer) {
+        guard let device = self.cameraInput?.device else { return }
+
+        // Return zoom value between the minimum and maximum zoom values
+        func zoomBounds(_ factor: CGFloat) -> CGFloat {
+            return min(max(factor, 1.0),  10)
+        }
+        func zoom(scale: CGFloat) {
+            do {
+                try device.lockForConfiguration() ; defer { device.unlockForConfiguration() }
+                device.videoZoomFactor = scale
+                self.delegate?.zoomFactor(scale)
+            } catch {
+                debugPrint("\(error.localizedDescription)")
+            }
+        }
+        
+        let scale = self.lastZoomFactor * sender.scale < 1.0 ? 1.0 / self.lastZoomFactor : self.lastZoomFactor * sender.scale 
+        self.lastZoomFactor = zoomBounds(scale)
+        print("lastZoom: \(self.lastZoomFactor), scale: \(sender.scale)")
+
+        switch sender.state {
+            case .began:
+                print("begin")
+                zoom(scale: self.lastZoomFactor)
+                sender.scale = 1.0
+            case .changed:
+                print("changed")
+                zoom(scale: self.lastZoomFactor)
+                sender.scale = 1.0
+            case .ended:
+                print("ended")
+//                self.lastZoomFactor = zoomBounds(scale)
+                zoom(scale: self.lastZoomFactor)
+            default: ()
+//                self.lastZoomFactor = zoomBounds(scale)
+//                zoom(scale: self.lastZoomFactor)
+}
+     }
 }
 
 // Photo Capture
