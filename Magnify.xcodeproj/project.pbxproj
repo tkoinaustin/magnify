@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7D73EB6823B9339A004D0F6C /* Camera.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7D73EB6723B9339A004D0F6C /* Camera.storyboard */; };
 		CB5CFEF6236DC9620045AC90 /* PMKCoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB5CFEF5236DC9620045AC90 /* PMKCoreLocation.framework */; };
 		CB5CFEF7236DC9620045AC90 /* PMKCoreLocation.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CB5CFEF5236DC9620045AC90 /* PMKCoreLocation.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		CB5CFEFA236DC9650045AC90 /* PMKFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB5CFEF9236DC9650045AC90 /* PMKFoundation.framework */; };
@@ -19,7 +20,7 @@
 		CBB133C12378ACAD007A2AEF /* LoadingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBB133C02378ACAD007A2AEF /* LoadingViewController.swift */; };
 		CBFDF542236DB7F500D417A1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBFDF541236DB7F500D417A1 /* AppDelegate.swift */; };
 		CBFDF544236DB7F500D417A1 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBFDF543236DB7F500D417A1 /* SceneDelegate.swift */; };
-		CBFDF546236DB7F500D417A1 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBFDF545236DB7F500D417A1 /* ViewController.swift */; };
+		CBFDF546236DB7F500D417A1 /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBFDF545236DB7F500D417A1 /* CameraViewController.swift */; };
 		CBFDF549236DB7F500D417A1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CBFDF547236DB7F500D417A1 /* Main.storyboard */; };
 		CBFDF54B236DB7F800D417A1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CBFDF54A236DB7F800D417A1 /* Assets.xcassets */; };
 		CBFDF54E236DB7F800D417A1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CBFDF54C236DB7F800D417A1 /* LaunchScreen.storyboard */; };
@@ -43,6 +44,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		7D73EB6723B9339A004D0F6C /* Camera.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Camera.storyboard; sourceTree = "<group>"; };
 		CB5CFEF5236DC9620045AC90 /* PMKCoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PMKCoreLocation.framework; path = Carthage/Build/iOS/PMKCoreLocation.framework; sourceTree = "<group>"; };
 		CB5CFEF9236DC9650045AC90 /* PMKFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PMKFoundation.framework; path = Carthage/Build/iOS/PMKFoundation.framework; sourceTree = "<group>"; };
 		CB5CFEFC236DC9680045AC90 /* PromiseKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PromiseKit.framework; path = Carthage/Build/iOS/PromiseKit.framework; sourceTree = "<group>"; };
@@ -53,7 +55,7 @@
 		CBFDF53E236DB7F500D417A1 /* Magnify.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Magnify.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CBFDF541236DB7F500D417A1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CBFDF543236DB7F500D417A1 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		CBFDF545236DB7F500D417A1 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		CBFDF545236DB7F500D417A1 /* CameraViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
 		CBFDF548236DB7F500D417A1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		CBFDF54A236DB7F800D417A1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CBFDF54D236DB7F800D417A1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -75,6 +77,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		7D73EB6623B932EE004D0F6C /* Camera */ = {
+			isa = PBXGroup;
+			children = (
+				CBFDF545236DB7F500D417A1 /* CameraViewController.swift */,
+				7D73EB6723B9339A004D0F6C /* Camera.storyboard */,
+			);
+			path = Camera;
+			sourceTree = "<group>";
+		};
+		7D73EB6923B98386004D0F6C /* Loading */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Loading;
+			sourceTree = "<group>";
+		};
 		CB5CFEF4236DC9610045AC90 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -105,9 +123,10 @@
 		CBFDF540236DB7F500D417A1 /* Magnify */ = {
 			isa = PBXGroup;
 			children = (
+				7D73EB6923B98386004D0F6C /* Loading */,
+				7D73EB6623B932EE004D0F6C /* Camera */,
 				CBFDF54C236DB7F800D417A1 /* LaunchScreen.storyboard */,
 				CBFDF547236DB7F500D417A1 /* Main.storyboard */,
-				CBFDF545236DB7F500D417A1 /* ViewController.swift */,
 				CBB133C02378ACAD007A2AEF /* LoadingViewController.swift */,
 				CB5CFF06236F1E590045AC90 /* UIView+Extension.swift */,
 				CB5CFF04236F06970045AC90 /* UIViewController+Alert.swift */,
@@ -182,6 +201,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CBFDF54E236DB7F800D417A1 /* LaunchScreen.storyboard in Resources */,
+				7D73EB6823B9339A004D0F6C /* Camera.storyboard in Resources */,
 				CBFDF54B236DB7F800D417A1 /* Assets.xcassets in Resources */,
 				CBFDF549236DB7F500D417A1 /* Main.storyboard in Resources */,
 			);
@@ -218,7 +238,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CBFDF546236DB7F500D417A1 /* ViewController.swift in Sources */,
+				CBFDF546236DB7F500D417A1 /* CameraViewController.swift in Sources */,
 				CB5CFF07236F1E5A0045AC90 /* UIView+Extension.swift in Sources */,
 				CBFDF542236DB7F500D417A1 /* AppDelegate.swift in Sources */,
 				CBB133C12378ACAD007A2AEF /* LoadingViewController.swift in Sources */,

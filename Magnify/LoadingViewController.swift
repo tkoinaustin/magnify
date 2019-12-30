@@ -16,8 +16,8 @@ class LoadingViewController: UIViewController {
 //        _ = self.activityIndicator().show()
         CameraManager.shared.prepareCamera()
             .done {
-                let storyboard = UIStoryboard(name: "Main", bundle: Bundle.main)
-                if let cameraViewController = self.storyboard?.instantiateViewController(withIdentifier: "CameraViewController") as? ViewController {
+                let storyboard = UIStoryboard(name: "Camera", bundle: Bundle.main)
+                if let cameraViewController = storyboard.instantiateViewController(withIdentifier: "CameraViewController") as? CameraViewController {
                     cameraViewController.modalPresentationStyle = .fullScreen
                     self.present(cameraViewController, animated: true, completion: nil)
                 }

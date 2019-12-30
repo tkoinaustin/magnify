@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  CameraViewController.swift
 //  Magnify
 //
 //  Created by Tom Nelson on 11/2/19.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class CameraViewController: UIViewController {
     
     enum displayMode {
         case camera
@@ -269,7 +269,7 @@ class ViewController: UIViewController {
     }
 }
 
-extension ViewController: CameraManagerDelegate {
+extension CameraViewController: CameraManagerDelegate {
     func zoomFactor(_ zoom: CGFloat) {
         self.zoomFactorLabel.text = self.formatter1.string(from: zoom as NSNumber)
     }
