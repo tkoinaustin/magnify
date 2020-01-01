@@ -10,19 +10,30 @@ import UIKit
 
 class CameraViewController: UIViewController {
     
-    enum displayMode {
+    private enum DisplayMode {
         case camera
         case picture
+    }
+    
+    private enum TorchMode {
+        case off
+        case on
+    }
+    
+    private enum ZoomMode {
+        case none
+        case some
     }
 
     private(set) var tapGestureRecognizer: UITapGestureRecognizer?
     private var formatter1 = NumberFormatter()
     private var formatter3 = NumberFormatter()
-    private var currentAnchor: CGPoint!
+//    private var currentAnchor: CGPoint!
     weak var delegate: CameraManagerDelegate?
-    private var mode: displayMode = .camera { didSet {
-        switch mode {
+    private var displayMode: DisplayMode = .camera { didSet {
+        switch displayMode {
             case .camera:
+//                self.resetButton.isEnabled = false
                 self.resetButton.setTitle("Reset", for: .normal)
                 CameraManager.shared.torch = true
                 self.flashView.alpha = 0
@@ -31,23 +42,38 @@ class CameraViewController: UIViewController {
             case .picture:
                 self.photoView.transform = .identity
                 self.photoView.frame = self.view.frame
+                self.resetButton.isEnabled = true
                 self.resetButton.setTitle("Clear", for: .normal)
         }
     }}
-
+    
+    private var torchMode: TorchMode = .off
+    private var zoomMode: ZoomMode = .none
+    
+    private func setResetState() {
+        switch (self.torchMode, self.zoomMode, self.displayMode) {
+        case (.off, .none, .camera):
+                self.resetButton.isEnabled = false
+                resetView.layer.borderColor = UIColor.clear.cgColor
+            default:
+                self.resetButton.isEnabled = true
+                resetView.layer.borderColor = UIColor.label.cgColor
+        }
+    }
+    
     var startingWidth: CGFloat = 0
     var fullWidth: CGFloat = 1000
     var deltaX: CGFloat = 0
     var deltaY: CGFloat = 0
 
-    @IBOutlet weak var resetButton: UIButton!
+    @IBOutlet private weak var resetButton: UIButton!
     @IBOutlet private weak var contentView: UIView!
     @IBOutlet private weak var flashView: UIView!
     @IBOutlet private weak var photoView: UIImageView!
     @IBOutlet private weak var zoomFactorLabel: UILabel!
     @IBOutlet private weak var brightnessLabel: UILabel!
     @IBAction func resetAction(_ sender: UIButton) {
-        switch self.mode {
+        switch self.displayMode {
             case .camera: CameraManager.shared.reset()
             case .picture: self.clearPhotoAction()
         }
@@ -70,7 +96,11 @@ class CameraViewController: UIViewController {
         resetView.layer.borderWidth = 0.5
         resetView.layer.borderColor = UIColor.black.cgColor
     }}
-
+    
+    class func instantiate() -> CameraViewController {
+        return CameraViewController.storyboard("Camera")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -153,7 +183,7 @@ class CameraViewController: UIViewController {
     }
     
     @objc private func pictureZoomed(_ sender: UIPinchGestureRecognizer) {
-        switch self.mode {
+        switch self.displayMode {
             case .camera: (CameraManager.shared.zoomGesture(sender))
             case .picture: (self.zoomPicture(sender))
         }
@@ -228,7 +258,7 @@ class CameraViewController: UIViewController {
     }
 
     @objc private func takePhotoAction() {
-        self.mode = .picture
+        self.displayMode = .picture
         _ = self.activityIndicator().show()
         flash {
             CameraManager.shared.captureImage()
@@ -253,7 +283,7 @@ class CameraViewController: UIViewController {
     }
     
     @objc private func clearPhotoAction() {
-        self.mode = .camera
+        self.displayMode = .camera
     }
 
     private func flash(completion: (() -> Void)? = nil) {
@@ -271,18 +301,23 @@ class CameraViewController: UIViewController {
 
 extension CameraViewController: CameraManagerDelegate {
     func zoomFactor(_ zoom: CGFloat) {
+        self.zoomMode = zoom == 1.0 ? .none : .some
         self.zoomFactorLabel.text = self.formatter1.string(from: zoom as NSNumber)
+        self.setResetState()
     }
     
     func brightness(_ brightness: Float) {
         let bright = Int(max(brightness * 100, 0))
+        self.torchMode = .on
         if bright == 0 {
             self.brightnessLabel.text = "Off"
+            self.torchMode = .off
         } else if bright == 100 {
             self.brightnessLabel.text = "Full"
         } else {
             self.brightnessLabel.text = "\(bright)%"
         }
+        self.setResetState()
     }
 
     func cameraDidChangeOrientation(_ deviceOrientation: UIDeviceOrientation) {

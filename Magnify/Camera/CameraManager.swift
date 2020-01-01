@@ -346,19 +346,19 @@ extension CameraManager {
         
         let scale = self.lastZoomFactor * sender.scale < 1.0 ? 1.0 / self.lastZoomFactor : self.lastZoomFactor * sender.scale 
         self.lastZoomFactor = zoomBounds(scale)
-        print("lastZoom: \(self.lastZoomFactor), scale: \(sender.scale)")
+//        print("lastZoom: \(self.lastZoomFactor), scale: \(sender.scale)")
 
         switch sender.state {
             case .began:
-                print("begin")
+//                print("begin")
                 zoom(scale: self.lastZoomFactor)
                 sender.scale = 1.0
             case .changed:
-                print("changed")
+//                print("changed")
                 zoom(scale: self.lastZoomFactor)
                 sender.scale = 1.0
             case .ended:
-                print("ended")
+//                print("ended")
 //                self.lastZoomFactor = zoomBounds(scale)
                 zoom(scale: self.lastZoomFactor)
             default: ()
