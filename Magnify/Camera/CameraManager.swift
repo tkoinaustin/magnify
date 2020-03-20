@@ -243,11 +243,9 @@ extension CameraManager {
         if let swipeGesture = gesture as? UISwipeGestureRecognizer {
             switch swipeGesture.direction {
             case .right, .left:
-                print("Swiped horizontal")
                 self.action = .torch
             case .up, .down:
-                print("Swiped vertical")
-//                self.action = .zoom
+                break
             default:
                 self.action = .undefined
             }
@@ -346,24 +344,17 @@ extension CameraManager {
         
         let scale = self.lastZoomFactor * sender.scale < 1.0 ? 1.0 / self.lastZoomFactor : self.lastZoomFactor * sender.scale 
         self.lastZoomFactor = zoomBounds(scale)
-//        print("lastZoom: \(self.lastZoomFactor), scale: \(sender.scale)")
 
         switch sender.state {
             case .began:
-//                print("begin")
                 zoom(scale: self.lastZoomFactor)
                 sender.scale = 1.0
             case .changed:
-//                print("changed")
                 zoom(scale: self.lastZoomFactor)
                 sender.scale = 1.0
             case .ended:
-//                print("ended")
-//                self.lastZoomFactor = zoomBounds(scale)
                 zoom(scale: self.lastZoomFactor)
             default: ()
-//                self.lastZoomFactor = zoomBounds(scale)
-//                zoom(scale: self.lastZoomFactor)
 }
      }
 }
@@ -391,25 +382,22 @@ extension CameraManager {
     }
 }
 
+
 class PhotoCaptureDelegate: NSObject, AVCapturePhotoCaptureDelegate {
     let deferred = DeferredPromise<Data>()
-
-    public func photoOutput(_ captureOutput: AVCapturePhotoOutput,
-                            didFinishProcessingPhoto photoSampleBuffer: CMSampleBuffer?,
-                            previewPhoto previewPhotoSampleBuffer: CMSampleBuffer?,
-                            resolvedSettings: AVCaptureResolvedPhotoSettings,
-                            bracketSettings: AVCaptureBracketedStillImageSettings?,
-                            error: Swift.Error?) {
+    
+    public func photoOutput(_ output: AVCapturePhotoOutput,
+                            didFinishProcessingPhoto photo: AVCapturePhoto,
+                            error: Error?) {
         if let error = error {
             self.deferred.reject(CameraManagerError.genericError(error.localizedDescription))
-        } else if let buffer = photoSampleBuffer,
-            let data = AVCapturePhotoOutput.jpegPhotoDataRepresentation(forJPEGSampleBuffer: buffer, previewPhotoSampleBuffer: nil) {
-            self.deferred.resolve(data)
+        } else if let photoData = photo.fileDataRepresentation() {
+            self.deferred.resolve(photoData)
         } else {
             self.deferred.reject(CameraManagerError.noPhotoData)
         }
     }
-    
+
     func onFinish() -> Promise<Data> {
         return self.deferred.promise
     }
