@@ -1,0 +1,34 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "PMKCoreLocation",
+        "repositoryURL": "https://github.com/PromiseKit/CoreLocation",
+        "state": {
+          "branch": null,
+          "revision": "d027bbcdfffc83fa7a790aa6f9189b18c94632e2",
+          "version": "3.1.1"
+        }
+      },
+      {
+        "package": "PMKFoundation",
+        "repositoryURL": "https://github.com/PromiseKit/Foundation",
+        "state": {
+          "branch": null,
+          "revision": "985f17fa69ee0e5b7eb3ff9be87ffc4e05fc0927",
+          "version": "3.4.0"
+        }
+      },
+      {
+        "package": "PromiseKit",
+        "repositoryURL": "https://github.com/mxcl/PromiseKit",
+        "state": {
+          "branch": null,
+          "revision": "aea48ea1855f5d82e2dffa6027afce3aab8f3dd7",
+          "version": "6.13.3"
+        }
+      }
+    ]
+  },
+  "version": 1
+}

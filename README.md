@@ -10,4 +10,4 @@ Use pinch to zoom the camera, swipe left and right to adjust the light, and simp
 This is a work in progress that will probably end up in the app store after I hire a graphics artist for icons and onboarding images.
 
 ## Dependencies
-They are pretty much a fact of life, but I try to keep them to a minumum. For this project I use PromiseKit. Actually, I use PromiseKit for most of my projects. I use Carthage as my dependency manager. I used to use Cocoapods, but found Carthage to be a better fit for me. I have the carthage build files included so you don't need to carthage update --platform ios, unless you want too.
+They are pretty much a fact of life, but I try to keep them to a minumum. For this project I use PromiseKit. Actually, I use PromiseKit for most of my projects. I use SPM as my dependency manager. I used to use Cocoapods, and then Carthage, but now I am on SPM and happy with  its simplicity.

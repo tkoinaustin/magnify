@@ -3,10 +3,12 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7D27FD7126DC3D1800024B12 /* PMKCoreLocation in Frameworks */ = {isa = PBXBuildFile; productRef = 7D27FD7026DC3D1800024B12 /* PMKCoreLocation */; };
+		7D27FD7426DC3D5700024B12 /* PMKFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = 7D27FD7326DC3D5700024B12 /* PMKFoundation */; };
 		7D73EB6823B9339A004D0F6C /* Camera.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7D73EB6723B9339A004D0F6C /* Camera.storyboard */; };
 		7D73EB6B23B98702004D0F6C /* Loading.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7D73EB6A23B98702004D0F6C /* Loading.storyboard */; };
 		7D73EB7E23B99030004D0F6C /* UIViewController+Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D73EB7923B99030004D0F6C /* UIViewController+Alert.swift */; };
@@ -17,12 +19,7 @@
 		7D73EB8F23B99726004D0F6C /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D73EB8C23B99726004D0F6C /* OnboardingViewController.swift */; };
 		7D73EB9023B99726004D0F6C /* CarouselViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D73EB8D23B99726004D0F6C /* CarouselViewController.swift */; };
 		7D73EB9123B99726004D0F6C /* Onboarding.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7D73EB8E23B99726004D0F6C /* Onboarding.storyboard */; };
-		CB5CFEF6236DC9620045AC90 /* PMKCoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB5CFEF5236DC9620045AC90 /* PMKCoreLocation.framework */; };
-		CB5CFEF7236DC9620045AC90 /* PMKCoreLocation.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CB5CFEF5236DC9620045AC90 /* PMKCoreLocation.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		CB5CFEFA236DC9650045AC90 /* PMKFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB5CFEF9236DC9650045AC90 /* PMKFoundation.framework */; };
-		CB5CFEFB236DC9650045AC90 /* PMKFoundation.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CB5CFEF9236DC9650045AC90 /* PMKFoundation.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		CB5CFEFD236DC9680045AC90 /* PromiseKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB5CFEFC236DC9680045AC90 /* PromiseKit.framework */; };
-		CB5CFEFE236DC9680045AC90 /* PromiseKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CB5CFEFC236DC9680045AC90 /* PromiseKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		7DED2E8826DC40DF00480D0D /* PromiseKit in Frameworks */ = {isa = PBXBuildFile; productRef = 7DED2E8726DC40DF00480D0D /* PromiseKit */; };
 		CB5CFF01236DD4540045AC90 /* DeferredPromise.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB5CFF00236DD4540045AC90 /* DeferredPromise.swift */; };
 		CBB133C12378ACAD007A2AEF /* LoadingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBB133C02378ACAD007A2AEF /* LoadingViewController.swift */; };
 		CBFDF542236DB7F500D417A1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBFDF541236DB7F500D417A1 /* AppDelegate.swift */; };
@@ -40,9 +37,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				CB5CFEFE236DC9680045AC90 /* PromiseKit.framework in Embed Frameworks */,
-				CB5CFEFB236DC9650045AC90 /* PMKFoundation.framework in Embed Frameworks */,
-				CB5CFEF7236DC9620045AC90 /* PMKCoreLocation.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -60,9 +54,6 @@
 		7D73EB8C23B99726004D0F6C /* OnboardingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
 		7D73EB8D23B99726004D0F6C /* CarouselViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CarouselViewController.swift; sourceTree = "<group>"; };
 		7D73EB8E23B99726004D0F6C /* Onboarding.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Onboarding.storyboard; sourceTree = "<group>"; };
-		CB5CFEF5236DC9620045AC90 /* PMKCoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PMKCoreLocation.framework; path = Carthage/Build/iOS/PMKCoreLocation.framework; sourceTree = "<group>"; };
-		CB5CFEF9236DC9650045AC90 /* PMKFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PMKFoundation.framework; path = Carthage/Build/iOS/PMKFoundation.framework; sourceTree = "<group>"; };
-		CB5CFEFC236DC9680045AC90 /* PromiseKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PromiseKit.framework; path = Carthage/Build/iOS/PromiseKit.framework; sourceTree = "<group>"; };
 		CB5CFF00236DD4540045AC90 /* DeferredPromise.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeferredPromise.swift; sourceTree = "<group>"; };
 		CBB133C02378ACAD007A2AEF /* LoadingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingViewController.swift; sourceTree = "<group>"; };
 		CBFDF53E236DB7F500D417A1 /* Magnify.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Magnify.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -79,9 +70,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CB5CFEFD236DC9680045AC90 /* PromiseKit.framework in Frameworks */,
-				CB5CFEFA236DC9650045AC90 /* PMKFoundation.framework in Frameworks */,
-				CB5CFEF6236DC9620045AC90 /* PMKCoreLocation.framework in Frameworks */,
+				7D27FD7126DC3D1800024B12 /* PMKCoreLocation in Frameworks */,
+				7DED2E8826DC40DF00480D0D /* PromiseKit in Frameworks */,
+				7D27FD7426DC3D5700024B12 /* PMKFoundation in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -144,9 +135,6 @@
 		CB5CFEF4236DC9610045AC90 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				CB5CFEFC236DC9680045AC90 /* PromiseKit.framework */,
-				CB5CFEF9236DC9650045AC90 /* PMKFoundation.framework */,
-				CB5CFEF5236DC9620045AC90 /* PMKCoreLocation.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -171,11 +159,11 @@
 		CBFDF540236DB7F500D417A1 /* Magnify */ = {
 			isa = PBXGroup;
 			children = (
+				7D73EB6623B932EE004D0F6C /* Camera */,
 				7D73EB7823B98FFF004D0F6C /* Extensions */,
-				7D73EB6F23B98B35004D0F6C /* Supporting Files */,
 				7D73EB6923B98386004D0F6C /* Loading */,
 				7D73EB8B23B996F5004D0F6C /* Onboarding */,
-				7D73EB6623B932EE004D0F6C /* Camera */,
+				7D73EB6F23B98B35004D0F6C /* Supporting Files */,
 			);
 			path = Magnify;
 			sourceTree = "<group>";
@@ -191,13 +179,17 @@
 				CBFDF53B236DB7F500D417A1 /* Frameworks */,
 				CBFDF53C236DB7F500D417A1 /* Resources */,
 				CB5CFEF8236DC9620045AC90 /* Embed Frameworks */,
-				CB5CFEFF236DC9AB0045AC90 /* Carthage */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			name = Magnify;
+			packageProductDependencies = (
+				7D27FD7026DC3D1800024B12 /* PMKCoreLocation */,
+				7D27FD7326DC3D5700024B12 /* PMKFoundation */,
+				7DED2E8726DC40DF00480D0D /* PromiseKit */,
+			);
 			productName = Magnify;
 			productReference = CBFDF53E236DB7F500D417A1 /* Magnify.app */;
 			productType = "com.apple.product-type.application";
@@ -226,6 +218,11 @@
 				Base,
 			);
 			mainGroup = CBFDF535236DB7F500D417A1;
+			packageReferences = (
+				7D27FD6F26DC3D1800024B12 /* XCRemoteSwiftPackageReference "CoreLocation" */,
+				7D27FD7226DC3D5700024B12 /* XCRemoteSwiftPackageReference "Foundation" */,
+				7DED2E8626DC40DF00480D0D /* XCRemoteSwiftPackageReference "PromiseKit" */,
+			);
 			productRefGroup = CBFDF53F236DB7F500D417A1 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -249,30 +246,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		CB5CFEFF236DC9AB0045AC90 /* Carthage */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"$(SRCROOT)/Carthage/Build/iOS/PromiseKit.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/PMKCoreLocation.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/PMKFoundation.framework",
-			);
-			name = Carthage;
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "/usr/local/bin/carthage copy-frameworks\n";
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		CBFDF53A236DB7F500D417A1 /* Sources */ = {
@@ -491,6 +464,51 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		7D27FD6F26DC3D1800024B12 /* XCRemoteSwiftPackageReference "CoreLocation" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/PromiseKit/CoreLocation";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.1.1;
+			};
+		};
+		7D27FD7226DC3D5700024B12 /* XCRemoteSwiftPackageReference "Foundation" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/PromiseKit/Foundation";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.4.0;
+			};
+		};
+		7DED2E8626DC40DF00480D0D /* XCRemoteSwiftPackageReference "PromiseKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/mxcl/PromiseKit";
+			requirement = {
+				kind = exactVersion;
+				version = 6.13.3;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		7D27FD7026DC3D1800024B12 /* PMKCoreLocation */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7D27FD6F26DC3D1800024B12 /* XCRemoteSwiftPackageReference "CoreLocation" */;
+			productName = PMKCoreLocation;
+		};
+		7D27FD7326DC3D5700024B12 /* PMKFoundation */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7D27FD7226DC3D5700024B12 /* XCRemoteSwiftPackageReference "Foundation" */;
+			productName = PMKFoundation;
+		};
+		7DED2E8726DC40DF00480D0D /* PromiseKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7DED2E8626DC40DF00480D0D /* XCRemoteSwiftPackageReference "PromiseKit" */;
+			productName = PromiseKit;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = CBFDF536236DB7F500D417A1 /* Project object */;
 }
