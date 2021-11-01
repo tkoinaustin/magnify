@@ -32,3 +32,4 @@ extension Identifiable where Self: NSObjectProtocol {
 extension UIViewController: Identifiable {}
 extension UITableViewCell: Identifiable {}
 extension UICollectionViewCell: Identifiable {}
+
